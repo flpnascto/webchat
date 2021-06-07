@@ -17,6 +17,11 @@
         <button type="button" id="nickname-button" data-testid="nickname-button">Salvar</button>
       </div>
       <ul id="users-list" class="board">
+        <% users.map((user)=>{%>
+          <li id=<%=user.id %> data-testid="online-user">
+            <%= user.nickname %>
+          </li>
+          <% }) %>
       </ul>
     </section>
     <aside id="board-messages" class="col-dir">

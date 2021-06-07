@@ -13,8 +13,9 @@ const setRandomNinckname = () => {
 
 const addUser = (id) => {
   const nickname = setRandomNinckname();
-  onlineUsers.push({ id, nickname });
-  return nickname;
+  const newUser = { id, nickname };
+  onlineUsers.push(newUser);
+  return newUser;
 };
 
 const getAllUsers = () => onlineUsers;
@@ -24,15 +25,16 @@ const getUserById = (id) => {
   return user.nickname;
 };
 
-// const updateUser = (username) => {
-//   const index = onlineUsers.findIndex((user) => user === username);
-//   onlineUsers[index] = username;
-//   return onlineUsers;
-// };
+const updateUser = (id, nickname) => {
+  const index = onlineUsers.findIndex((user) => user.id === id);
+  const user = { id, nickname };
+  onlineUsers[index] = user;
+  return user;
+};
 
 module.exports = {
   addUser,
   getAllUsers,
   getUserById,
-  // updateUser,
+  updateUser,
 };

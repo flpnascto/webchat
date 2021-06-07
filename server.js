@@ -19,9 +19,8 @@ const User = require('./models/userModel');
 io.on('connection', async (client) => {
   console.log(`client id: ${client.id} connected.`);
 
-  await User.addUser(client.id);
-  const users = await User.getAllUsers();
-  io.emit('userList', users);
+  const newUser = await User.addUser(client.id);
+  io.emit('newUser', newUser);
 
   client.on('sendMessage', (message) => {
     const date = moment().format('DD-MM-YYYY h:mm:ss A');
@@ -30,10 +29,10 @@ io.on('connection', async (client) => {
     io.emit('reciveMessage', sendMessage);
   });
 
-  // client.on('nicknameChange', (nickname) => {
-  //   const userUpdate = User.updateUser(nickname);
-  //   io.emit('usersList', userUpdate);
-  // });
+  client.on('nicknameChange', (nickname) => {
+    const userUpdate = User.updateUser(client.id, nickname);
+    io.emit('updateUser', userUpdate);
+  });
 });
 
 app.set('view engine', 'ejs');

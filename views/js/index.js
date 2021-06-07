@@ -7,15 +7,13 @@ changeNicknameButton.addEventListener('click', () => {
   if (updateNickname !== '') client.emit('nicknameChange', updateNickname);
 });
 
-client.on('userList', (users) => {
+client.on('newUser', (user) => {
   const usersListUl = document.getElementById('users-list');
-  users.forEach((user) => {
-    const li = document.createElement('li');
-    li.setAttribute('id', user.id);
-    li.setAttribute('data-testid', 'online-user');
-    li.innerText = user.nickname;
-    usersListUl.appendChild(li);
-  });
+  const li = document.createElement('li');
+  li.setAttribute('id', user.id);
+  li.setAttribute('data-testid', 'online-user');
+  li.innerText = user.nickname;
+  usersListUl.appendChild(li);
 });
 
 const sendButton = document.getElementById('send-button');
@@ -31,4 +29,9 @@ client.on('reciveMessage', (message) => {
   p.setAttribute('data-testid', 'message');
   p.innerHTML = message;
   boardMessagesAside.appendChild(p);
+});
+
+client.on('updateUser', (user) => {
+  const li = document.getElementById(user.id);
+  li.innerHTML = user.nickname;
 });
