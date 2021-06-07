@@ -17,3 +17,18 @@ client.on('userList', (users) => {
     usersListUl.appendChild(li);
   });
 });
+
+const sendButton = document.getElementById('send-button');
+sendButton.addEventListener('click', () => {
+  const messageBoxInput = document.getElementById('message-box');
+  const message = messageBoxInput.value;
+  client.emit('sendMessage', message);
+});
+
+client.on('reciveMessage', (message) => {
+  const boardMessagesAside = document.getElementById('board-messages');
+  const p = document.createElement('p');
+  p.setAttribute('data-testid', 'message');
+  p.innerHTML = message;
+  boardMessagesAside.appendChild(p);
+});

@@ -23,10 +23,11 @@ io.on('connection', async (client) => {
   const users = await User.getAllUsers();
   io.emit('userList', users);
 
-  client.on('message', (message) => {
+  client.on('sendMessage', (message) => {
     const date = moment().format('DD-MM-YYYY h:mm:ss A');
-    const sendMessage = `${date} - ${message.nickname}: ${message.chatMessage}`;
-    io.emit('message', sendMessage);
+    const nickname = User.getUserById(client.id);
+    const sendMessage = `${date} - ${nickname}: ${message}`;
+    io.emit('reciveMessage', sendMessage);
   });
 
   // client.on('nicknameChange', (nickname) => {
