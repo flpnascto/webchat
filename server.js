@@ -17,22 +17,17 @@ const Webchat = require('./controllers/webchatController');
 const User = require('./models/userModel');
 const Message = require('./models/messageModel');
 
-let counter = 0;
-
 io.on('connection', async (client) => {
   console.log(`client id: ${client.id} connected.`);
 
   const newUser = await User.addUser(client.id);
   io.emit('newUser', newUser);
 
-  client.on('message', async (message) => {
+  client.on('message', async ({ chatMessage, nickname }) => {
     const date = moment().format('DD-MM-YYYY h:mm:ss A');
-    const nickname = User.getUserById(client.id);
-    const sendMessage = `${date} - ${nickname}: ${message}`;
-    io.emit('reciveMessage', sendMessage);
-    counter += 1;
-    console.log(`--> ${counter}: ${message}`);
-    await Message.create(message, nickname);
+    const sendMessage = `${date} - ${nickname}: ${chatMessage}`;
+    io.emit('message', sendMessage);
+    await Message.create(chatMessage, nickname);
   });
 
   client.on('nicknameChange', (nickname) => {

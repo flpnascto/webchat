@@ -19,12 +19,12 @@ client.on('newUser', (user) => {
 const sendButton = document.getElementById('send-button');
 sendButton.addEventListener('click', () => {
   const messageBoxInput = document.getElementById('message-box');
-  const message = messageBoxInput.value;
-  messageBoxInput.value = '';
-  client.emit('message', message);
+  const chatMessage = messageBoxInput.value;
+  const nickname = document.getElementById(client.id).innerText;
+  client.emit('message', ({ chatMessage, nickname }));
 });
 
-client.on('reciveMessage', (message) => {
+client.on('message', (message) => {
   const boardMessagesAside = document.getElementById('board-messages');
   const p = document.createElement('p');
   p.setAttribute('data-testid', 'message');

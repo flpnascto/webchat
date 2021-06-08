@@ -1,10 +1,9 @@
 const moment = require('moment');
 const conn = require('./connection');
-require('dotenv').config();
 
-const collectionName = process.env.DB_NAME;
+const collectionName = 'messages';
 
-const create = async (message, nickname) => conn()
+const create = (message, nickname) => conn()
   .then((db) => {
     const timestamp = moment().format('DD-MM-YYYY h:mm:ss A');
     db.collection(collectionName).insertOne({
@@ -14,7 +13,7 @@ const create = async (message, nickname) => conn()
     });
   });
 
-const findAll = async () => conn()
+const findAll = () => conn()
   .then((db) => db.collection(collectionName).find().toArray());
 
 module.exports = {
