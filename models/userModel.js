@@ -32,9 +32,15 @@ const updateUser = (id, nickname) => {
   return user;
 };
 
+const remove = (id) => {
+  const index = onlineUsers.findIndex((user) => user.id === id);
+  onlineUsers.splice(index, 1);
+};
+
 module.exports = {
   addUser,
   getAllUsers,
   getUserById,
   updateUser,
+  remove,
 };

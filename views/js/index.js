@@ -7,13 +7,22 @@ changeNicknameButton.addEventListener('click', () => {
   if (updateNickname !== '') client.emit('nicknameChange', updateNickname);
 });
 
-client.on('newUser', (user) => {
-  const usersListUl = document.getElementById('users-list');
+const createLiUser = (user) => {
   const li = document.createElement('li');
   li.setAttribute('id', user.id);
   li.setAttribute('data-testid', 'online-user');
   li.innerText = user.nickname;
-  usersListUl.appendChild(li);
+  return li;
+};
+
+client.on('newUser', (user) => {
+  const usersListUl = document.getElementById('users-list');
+  usersListUl.appendChild(createLiUser(user));
+});
+
+client.on('nickname', (user) => {
+  const usersListUl = document.getElementById('users-list');
+  usersListUl.insertBefore(createLiUser(user), usersListUl.firstChild);
 });
 
 const sendButton = document.getElementById('send-button');
@@ -35,4 +44,8 @@ client.on('message', (message) => {
 client.on('updateUser', (user) => {
   const li = document.getElementById(user.id);
   li.innerHTML = user.nickname;
+});
+
+client.on('removeUser', (id) => {
+  document.getElementById(id).remove();
 });

@@ -21,7 +21,8 @@ io.on('connection', async (client) => {
   console.log(`client id: ${client.id} connected.`);
 
   const newUser = await User.addUser(client.id);
-  io.emit('newUser', newUser);
+  client.emit('nickname', newUser);
+  client.broadcast.emit('newUser', newUser);
 
   client.on('message', async ({ chatMessage, nickname }) => {
     const date = moment().format('DD-MM-YYYY h:mm:ss A');
@@ -33,6 +34,11 @@ io.on('connection', async (client) => {
   client.on('nicknameChange', (nickname) => {
     const userUpdate = User.updateUser(client.id, nickname);
     io.emit('updateUser', userUpdate);
+  });
+
+  client.on('disconnect', async () => {
+    await User.remove(client.id);
+    io.emit('removeUser', client.id);
   });
 });
 
