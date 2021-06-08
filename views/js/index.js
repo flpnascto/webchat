@@ -20,7 +20,8 @@ const sendButton = document.getElementById('send-button');
 sendButton.addEventListener('click', () => {
   const messageBoxInput = document.getElementById('message-box');
   const message = messageBoxInput.value;
-  client.emit('sendMessage', message);
+  messageBoxInput.value = '';
+  client.emit('message', message);
 });
 
 client.on('reciveMessage', (message) => {

@@ -1,8 +1,10 @@
 const User = require('../models/userModel');
+const Message = require('../models/messageModel');
 
-const startSection = (_req, res) => {
+const startSection = async (_req, res) => {
   const users = User.getAllUsers();
-  res.render('webchat.ejs', { users });
+  const messages = await Message.findAll();
+  res.render('webchat.ejs', { users, messages });
 };
 
 module.exports = {

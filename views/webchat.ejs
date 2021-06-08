@@ -25,6 +25,11 @@
       </ul>
     </section>
     <aside id="board-messages" class="col-dir">
+      <% messages.map((message)=>{%>
+        <p data-testid="message">
+          <%= `${message.timestamp} - ${message.nickname}: ${message.message}` %>
+        </p>
+        <% }) %>
     </aside>
   </main>
   <footer>

@@ -2,7 +2,7 @@ const randomName = require('node-random-name');
 
 const onlineUsers = [];
 
-const setRandomNinckname = () => {
+const setRandomNickname = () => {
   let nickname = randomName({ first: true });
   while (nickname.length < 16) {
     nickname += '-';
@@ -12,7 +12,7 @@ const setRandomNinckname = () => {
 };
 
 const addUser = (id) => {
-  const nickname = setRandomNinckname();
+  const nickname = setRandomNickname();
   const newUser = { id, nickname };
   onlineUsers.push(newUser);
   return newUser;

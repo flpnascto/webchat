@@ -15,6 +15,9 @@ const io = require('socket.io')(http, {
 
 const Webchat = require('./controllers/webchatController');
 const User = require('./models/userModel');
+const Message = require('./models/messageModel');
+
+let counter = 0;
 
 io.on('connection', async (client) => {
   console.log(`client id: ${client.id} connected.`);
@@ -22,11 +25,14 @@ io.on('connection', async (client) => {
   const newUser = await User.addUser(client.id);
   io.emit('newUser', newUser);
 
-  client.on('sendMessage', (message) => {
+  client.on('message', async (message) => {
     const date = moment().format('DD-MM-YYYY h:mm:ss A');
     const nickname = User.getUserById(client.id);
     const sendMessage = `${date} - ${nickname}: ${message}`;
     io.emit('reciveMessage', sendMessage);
+    counter += 1;
+    console.log(`--> ${counter}: ${message}`);
+    await Message.create(message, nickname);
   });
 
   client.on('nicknameChange', (nickname) => {
